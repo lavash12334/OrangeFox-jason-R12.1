@@ -1,0 +1,77 @@
+name: Build OrangeFox R12.1 for Mi Note 3 (jason)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Device Tree
+        uses: actions/checkout@v4
+        with:
+          path: device/xiaomi/jason
+
+      - name: Maximize Build Space
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          df -h
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            aria2 bc bison build-essential ccache curl flex g++-multilib \
+            gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev \
+            lib32readline-dev lib32z1-dev liblz4-tool libncurses5 \
+            libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils \
+            lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev \
+            python3 python-is-python3
+          mkdir -p ~/bin
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          echo "$HOME/bin" >> $GITHUB_PATH
+
+      - name: Initialize OrangeFox Manifest (fox_12.1)
+        run: |
+          mkdir -p ~/orangefox
+          cd ~/orangefox
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          repo init -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1 --depth=1
+          repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j$(nproc)
+
+      - name: Integrate Device Tree
+        run: |
+          mkdir -p ~/orangefox/device/xiaomi/
+          cp -r $GITHUB_WORKSPACE/device/xiaomi/jason ~/orangefox/device/xiaomi/jason
+
+      - name: Build Recovery Image & Zip
+        run: |
+          cd ~/orangefox
+          export ALLOW_MISSING_DEPENDENCIES=true
+          export FOX_BUILD_DEVICE=jason
+          export LC_ALL="C"
+          source build/envsetup.sh
+          lunch omni_jason-eng || lunch omni_jason-userdebug
+          mka recoveryimage -j$(nproc)
+
+      - name: Upload Recovery Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OrangeFox-R12.1-jason
+          path: |
+            ~/orangefox/out/target/product/jason/OrangeFox-*.zip
+            ~/orangefox/out/target/product/jason/recovery.img
+            ~/orangefox/out/target/product/jason/boot.img

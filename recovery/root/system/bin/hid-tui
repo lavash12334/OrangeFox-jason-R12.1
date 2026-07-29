@@ -1,0 +1,3 @@
+#!/system/bin/sh
+# OrangeFox HID Terminal UI wrapper
+exec /system/bin/hid-gadget tui "$@"

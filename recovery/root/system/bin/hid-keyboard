@@ -1,0 +1,7 @@
+#!/system/bin/sh
+# OrangeFox HID Keyboard wrapper
+if ! /system/bin/hid-gadget keyboard "$@"; then
+    echo "HID Keyboard failed, triggering auto-setup..."
+    /system/bin/hid-setup
+    exec /system/bin/hid-gadget keyboard "$@"
+fi

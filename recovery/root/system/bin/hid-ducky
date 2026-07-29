@@ -1,0 +1,7 @@
+#!/system/bin/sh
+# OrangeFox HID DuckyScript wrapper
+if ! /system/bin/hid-gadget ducky "$@"; then
+    echo "DuckyScript execution failed, triggering auto-setup..."
+    /system/bin/hid-setup
+    exec /system/bin/hid-gadget ducky "$@"
+fi
