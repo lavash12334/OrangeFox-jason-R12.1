@@ -74,8 +74,9 @@ TARGET_USERIMAGES_USE_EXT4 := true
 FOX_BUILD_TYPE := Unofficial
 FOX_MAINTAINER_PATCH_VERSION := 1
 OF_MAINTAINER := "Kirill & Antigravity"
+FOX_MAINTAINER := "Kirill & Antigravity"
 FOX_BUILD_DEVICE := jason
-OF_TARGET_DEVICES := jason
+FOX_TARGET_DEVICES := jason
 
 # OrangeFox R12.1 Options & Patches
 OF_USE_MAGISKBOOT := 1
