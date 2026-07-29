@@ -2,7 +2,7 @@ name: Build OrangeFox R12.1 for Mi Note 3 (jason)
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ "*" ]
   workflow_dispatch:
 
 jobs:
