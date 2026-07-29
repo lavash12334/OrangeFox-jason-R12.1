@@ -65,7 +65,7 @@ jobs:
           export FOX_BUILD_DEVICE=jason
           export LC_ALL="C"
           source build/envsetup.sh
-          lunch omni_jason-eng || lunch omni_jason-userdebug
+          lunch fox_jason-eng || lunch fox_jason-userdebug || lunch omni_jason-eng || lunch omni_jason-userdebug
           mka recoveryimage -j$(nproc)
 
       - name: Upload Recovery Artifacts

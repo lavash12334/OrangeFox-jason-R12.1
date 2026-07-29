@@ -20,7 +20,9 @@ PRODUCT_RELEASE_NAME := jason
 $(call inherit-product, build/target/product/embedded.mk)
 
 # Inherit from our custom product configuration
-$(call inherit-product, vendor/omni/config/common.mk)
+$(call inherit-product-if-exists, vendor/omni/config/common.mk)
+$(call inherit-product-if-exists, vendor/twrp/config/common.mk)
+$(call inherit-product-if-exists, vendor/fox/config/common.mk)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.hardware.keystore=sdm660 \
