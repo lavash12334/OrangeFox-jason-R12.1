@@ -60,6 +60,7 @@ jobs:
 
       - name: Build Recovery Image & Zip
         run: |
+          set +e
           cd ~/orangefox
           echo "=== Inspecting Vendor Directory ==="
           ls -la vendor/ || true
