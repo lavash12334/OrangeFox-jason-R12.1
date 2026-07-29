@@ -115,16 +115,5 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb
     write /config/usb_gadget/g1/UDC ${sys.usb.controller}
     setprop sys.usb.state ${sys.usb.config}
 
-service hid_setup /system/bin/hid-setup
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
-
-on property:sys.usb.state=adb
-    start hid_setup
-
-on property:sys.usb.state=mtp,adb
-    start hid_setup
+# hid_setup service temporarily disabled to isolate init bootloop
 
