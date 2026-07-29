@@ -61,11 +61,14 @@ jobs:
       - name: Build Recovery Image & Zip
         run: |
           cd ~/orangefox
+          echo "=== Inspecting Vendor Directory ==="
+          ls -la vendor/ || true
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_BUILD_DEVICE=jason
           export LC_ALL="C"
           source build/envsetup.sh
-          lunch fox_jason-eng || lunch fox_jason-userdebug || lunch omni_jason-eng || lunch omni_jason-userdebug
+          echo "=== Available Lunch Targets ==="
+          lunch omni_jason-eng || lunch fox_jason-eng || lunch twrp_jason-eng || lunch omni_jason-userdebug || lunch fox_jason-userdebug
           mka recoveryimage -j$(nproc)
 
       - name: Upload Recovery Artifacts
