@@ -43,14 +43,15 @@ jobs:
           chmod a+x ~/bin/repo
           echo "$HOME/bin" >> $GITHUB_PATH
 
-      - name: Initialize OrangeFox Manifest (fox_12.1)
+      - name: Initialize & Sync OrangeFox Source (fox_12.1)
         run: |
-          mkdir -p ~/orangefox
-          cd ~/orangefox
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          repo init -u https://gitlab.com/OrangeFox/Manifest.git -b fox_12.1 --depth=1
-          repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j$(nproc)
+          mkdir -p ~/OrangeFox_sync
+          cd ~/OrangeFox_sync
+          git clone https://gitlab.com/OrangeFox/sync.git
+          cd sync
+          ./orangefox_sync.sh --branch 12.1 --path ~/orangefox
 
       - name: Integrate Device Tree
         run: |
