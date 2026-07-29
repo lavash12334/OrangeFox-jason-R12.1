@@ -71,8 +71,8 @@ jobs:
           export TARGET_SCREEN_HEIGHT=1920
           export LC_ALL="C"
           source build/envsetup.sh
-          echo "=== Available Lunch Targets ==="
-          lunch omni_jason-eng || lunch fox_jason-eng || lunch twrp_jason-eng || lunch omni_jason-userdebug || lunch fox_jason-userdebug
+          set -e
+          lunch twrp_jason-eng || lunch fox_jason-eng || lunch omni_jason-eng
           mka recoveryimage -j$(nproc)
 
       - name: Upload Recovery Artifacts
