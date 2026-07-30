@@ -62,17 +62,17 @@ jobs:
         run: |
           set +e
           cd ~/orangefox
-          echo "=== Inspecting Vendor Directory ==="
-          ls -la vendor/ || true
+          echo "=== Sourcing OrangeFox Build Environment ==="
           export ALLOW_MISSING_DEPENDENCIES=true
           export FOX_BUILD_DEVICE=jason
-          export TW_THEME="portrait_hdpi"
-          export TARGET_SCREEN_WIDTH=1080
-          export TARGET_SCREEN_HEIGHT=1920
           export LC_ALL="C"
           source build/envsetup.sh
+          if [ -f device/xiaomi/jason/vendorsetup.sh ]; then
+            echo "Sourcing device vendorsetup.sh..."
+            source device/xiaomi/jason/vendorsetup.sh
+          fi
           set -e
-          lunch twrp_jason-eng || lunch fox_jason-eng || lunch omni_jason-eng
+          lunch fox_jason-eng || lunch twrp_jason-eng || lunch omni_jason-eng
           mka recoveryimage -j$(nproc)
 
       - name: Upload Recovery Artifacts
