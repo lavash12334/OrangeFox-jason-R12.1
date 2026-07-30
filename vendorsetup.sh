@@ -4,8 +4,8 @@
 
 export FOX_BUILD_TYPE="Unofficial"
 export FOX_MAINTAINER_PATCH_VERSION="1"
-export OF_MAINTAINER="Kirill & Antigravity"
-export FOX_MAINTAINER="Kirill & Antigravity"
+export OF_MAINTAINER="lavash12334"
+export FOX_MAINTAINER="lavash12334"
 export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
 
