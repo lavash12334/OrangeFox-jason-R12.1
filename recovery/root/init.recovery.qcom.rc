@@ -4,8 +4,11 @@ on init
     chmod 0664 /dev/ion
     chown system system /dev/ion
     write /sys/bus/i2c/devices/4-0020/input/input1/wake_gesture 1
+    setprop sys.usb.config adb
 
 on fs
+    wait /dev/block/platform/soc/7980000.sdhci
+    symlink /dev/block/platform/soc/7980000.sdhci /dev/block/bootdevice
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
