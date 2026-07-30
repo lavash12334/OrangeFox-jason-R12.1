@@ -38,12 +38,11 @@ export OF_STATUS_INDENT_RIGHT=48
 export OF_ALLOW_DISABLE_NAVBAR=0
 export OF_CLOCK_POS=1
 
-# FBE Decryption & Storage
+# FBE Decryption & Storage (SDM660 FBE v1 / ICE)
 export TW_INCLUDE_CRYPTO=true
 export TW_INCLUDE_FBE=true
-export TW_INCLUDE_FBE_METADATA_DECRYPT=true
 export BOARD_USES_QCOM_FBE_DECRYPTION=true
-export TW_USE_FSCRYPT_POLICY=2
+export TW_USE_FSCRYPT_POLICY=1
 export RECOVERY_SDCARD_ON_DATA=true
 
 # Add lunch combos
