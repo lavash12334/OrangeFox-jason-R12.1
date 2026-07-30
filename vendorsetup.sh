@@ -8,7 +8,6 @@ export OF_MAINTAINER="Kirill & Antigravity"
 export FOX_MAINTAINER="Kirill & Antigravity"
 export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
-export OF_TARGET_DEVICES="jason"
 
 # OrangeFox Options & Features
 export OF_USE_MAGISKBOOT=1
