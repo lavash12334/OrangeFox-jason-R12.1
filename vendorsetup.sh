@@ -3,7 +3,6 @@
 #
 
 export FOX_BUILD_TYPE="Unofficial"
-export FOX_VERSION="R12.1"
 export FOX_MAINTAINER_PATCH_VERSION="1"
 export OF_MAINTAINER="Kirill & Antigravity"
 export FOX_MAINTAINER="Kirill & Antigravity"
