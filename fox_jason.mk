@@ -4,10 +4,12 @@
 
 PRODUCT_RELEASE_NAME := jason
 
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/base_system.mk)
 
 $(call inherit-product-if-exists, vendor/fox/config/common.mk)
+$(call inherit-product-if-exists, vendor/recovery/config/common.mk)
 $(call inherit-product-if-exists, vendor/twrp/config/common.mk)
 $(call inherit-product-if-exists, vendor/omni/config/common.mk)
 
