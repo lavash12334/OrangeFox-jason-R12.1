@@ -76,11 +76,13 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
 
-# FBE Decryption (Android 13 / crDroid 13 / SDM660)
+# FBE Decryption (Android 13 / crDroid 13 / SDM660 Keymaster 3.0)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 TW_USE_FSCRYPT_POLICY := 1
+OF_KEYMASTER_VERSION := 3.0
+TW_KEYMASTER_MAX_API := 3.0
 
 # Recovery Configuration & Brightness
 BOARD_HAS_NO_REAL_SDCARD := true
