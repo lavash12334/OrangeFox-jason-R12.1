@@ -77,7 +77,7 @@ jobs:
           export USE_CCACHE=1
           export CCACHE_EXEC=/usr/bin/ccache
           export CCACHE_DIR=~/.ccache
-          ccache -M 10G
+          ccache -M 3.5G
           source build/envsetup.sh
           if [ -f device/xiaomi/jason/vendorsetup.sh ]; then
             echo "Sourcing device vendorsetup.sh..."
