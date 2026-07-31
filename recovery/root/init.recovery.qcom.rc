@@ -16,4 +16,5 @@ on fs
 service sbinqseecomd /sbin/qseecomd
     user root
     group root
+    setenv LD_LIBRARY_PATH /sbin:/vendor/lib64:/system/lib64
     seclabel u:r:recovery:s0
