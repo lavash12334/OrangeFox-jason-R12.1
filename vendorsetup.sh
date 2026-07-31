@@ -45,6 +45,8 @@ export BOARD_USES_QCOM_FBE_DECRYPTION=true
 export TW_USE_FSCRYPT_POLICY=1
 export OF_KEYMASTER_VERSION=3.0
 export RECOVERY_SDCARD_ON_DATA=true
+export TW_INTERNAL_STORAGE_PATH="/data/media"
+export TW_INTERNAL_STORAGE_MOUNT_POINT="sdcard"
 
 # Add lunch combos
 add_lunch_combo fox_jason-eng
