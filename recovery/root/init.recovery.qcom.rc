@@ -10,11 +10,15 @@ on boot
 on fs
     wait /dev/block/platform/soc/c0c4000.sdhci
     symlink /dev/block/platform/soc/c0c4000.sdhci /dev/block/bootdevice
+    mkdir /vendor/etc 0755 root root
+    mkdir /vendor/etc/vintf 0755 root root
+    symlink /system/etc/vintf/manifest.xml /vendor/manifest.xml
+    symlink /system/etc/vintf/manifest.xml /vendor/etc/vintf/manifest.xml
     start sbinqseecomd
 
 # separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
 service sbinqseecomd /sbin/qseecomd
     user root
     group root
-    setenv LD_LIBRARY_PATH /sbin:/vendor/lib64:/system/lib64
+    setenv LD_LIBRARY_PATH /sbin
     seclabel u:r:recovery:s0
