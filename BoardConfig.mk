@@ -13,14 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#
-# This file sets variables that control the way modules are built
-# thorughout the system. It should not be used to conditionally
-# disable makefiles (the proper mechanism to control what gets
-# included in a build is to use PRODUCT_PACKAGES in a product
-# definition file).
-#
-
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := sdm660
 TARGET_NO_BOOTLOADER := true
@@ -76,13 +68,21 @@ TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
 
-# FBE Decryption (Android 13 / crDroid 13 / SDM660 Keymaster 3.0)
+# FBE Decryption (Android 13 Fixes)
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_FBE := true
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+BOARD_USES_METADATA_PARTITION := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
-TW_USE_FSCRYPT_POLICY := 1
-OF_KEYMASTER_VERSION := 3.0
-TW_KEYMASTER_MAX_API := 3.0
+TW_USE_FSCRYPT_POLICY := 2
+
+# Dynamic System Keymaster
+TW_CRYPTO_USE_SYSTEM_KEYMASTER := true
+
+# Закомментирован хардкод Keymaster 3.0, чтобы не блокировать демоны A13
+# OF_KEYMASTER_VERSION := 3.0
+# TW_KEYMASTER_MAX_API := 3.0
+
 TW_INTERNAL_STORAGE_PATH := "/data/media"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 
@@ -94,7 +94,10 @@ TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 2048
-TW_EXCLUDE_DEFAULT_USB_INIT := true
+
+# Закомментировано, чтобы вернуть штатную инициализацию USB для MTP
+# TW_EXCLUDE_DEFAULT_USB_INIT := true
+
 TW_EXTRA_LANGUAGES := false
 TW_INCLUDE_NTFS_3G := true
 TW_IGNORE_MISC_WIPE_DATA := true
