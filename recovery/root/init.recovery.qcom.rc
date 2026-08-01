@@ -12,8 +12,7 @@ on fs
     symlink /dev/block/platform/soc/c0c4000.sdhci /dev/block/bootdevice
     mkdir /vendor/etc 0755 root root
     mkdir /vendor/etc/vintf 0755 root root
-    symlink /system/etc/vintf/manifest.xml /vendor/manifest.xml
-    symlink /system/etc/vintf/manifest.xml /vendor/etc/vintf/manifest.xml
+    symlink /vendor/manifest.xml /vendor/etc/vintf/manifest.xml
     start sbinqseecomd
 
 # separate copy needed to use /sbin/linker64 instead of /system/bin/linker64
