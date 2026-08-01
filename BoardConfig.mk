@@ -80,9 +80,9 @@ TW_USE_FSCRYPT_POLICY := 2
 # Dynamic System Keymaster
 TW_CRYPTO_USE_SYSTEM_KEYMASTER := true
 
-# Закомментирован хардкод Keymaster 3.0, чтобы не блокировать демоны A13
-# OF_KEYMASTER_VERSION := 3.0
-# TW_KEYMASTER_MAX_API := 3.0
+# Enable Keymaster 3.0 hardware API
+OF_KEYMASTER_VERSION := 3.0
+TW_KEYMASTER_MAX_API := 3.0
 
 TW_INTERNAL_STORAGE_PATH := "/data/media"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
