@@ -69,9 +69,9 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_SCREEN_WIDTH := 1080
 TARGET_SCREEN_HEIGHT := 1920
 
-# FBE Decryption (Android 13 Fixes)
+# FBE Decryption (Android 12/13/14 Fixes for Kernel 4.19)
 TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_FBE := true
+TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 BOARD_USES_METADATA_PARTITION := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
@@ -80,9 +80,9 @@ TW_USE_FSCRYPT_POLICY := 2
 # Dynamic System Keymaster
 TW_CRYPTO_USE_SYSTEM_KEYMASTER := true
 
-# Enable Keymaster 3.0 hardware API
-OF_KEYMASTER_VERSION := 3.0
-TW_KEYMASTER_MAX_API := 3.0
+# Enable Keymaster 4.0/4.1 hardware API for Kernel 4.19
+OF_KEYMASTER_VERSION := 4.0
+TW_KEYMASTER_MAX_API := 4.1
 
 TW_INTERNAL_STORAGE_PATH := "/data/media"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
@@ -95,6 +95,7 @@ TARGET_RECOVERY_QCOM_RTC_FIX := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 2048
+TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/battery
 
 # Закомментировано, чтобы вернуть штатную инициализацию USB для MTP
 # TW_EXCLUDE_DEFAULT_USB_INIT := true
