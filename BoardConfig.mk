@@ -35,23 +35,19 @@ TARGET_IS_64_BIT := true
 # Assert
 TARGET_OTA_ASSERT_DEVICE := jason,jason_sp
 
-# Kernel Configuration for Kernel 4.19 (from lavender-fox_12.1 reference)
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3
-BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 sched_enable_hmp=1 sched_enable_power_aware=1
-BOARD_KERNEL_CMDLINE += service_locator.enable=1 swiotlb=2048 androidboot.configfs=true
-BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a800000.dwc3 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-BOARD_KERNEL_CMDLINE += androidboot.boot_devices=c0c4000.sdhci
+# Kernel Configuration for Kernel 4.19 (Unpacked from lineage-22.2-20260620-recovery-jason-4.19.img)
+BOARD_KERNEL_CMDLINE := androidboot.configfs=true androidboot.hardware=qcom androidboot.usbcontroller=a800000.dwc3
+BOARD_KERNEL_CMDLINE += ehci-hcd.park=3 loop.max_part=7 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x37
+BOARD_KERNEL_CMDLINE += printk.devkmsg=on sched_enable_hmp=1 sched_enable_power_aware=1
+BOARD_KERNEL_CMDLINE += service_locator.enable=1 usbcore.autosuspend=7 user_debug=31
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
-BOARD_BOOTIMG_HEADER_VERSION := 1
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 4096
-BOARD_RAMDISK_OFFSET := 0x02000000
-BOARD_KERNEL_TAGS_OFFSET := 0x01E00000
-BOARD_MKBOOTIMG_ARGS := --header_version 1 --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
+BOARD_RAMDISK_OFFSET := 0x01000000
+BOARD_KERNEL_TAGS_OFFSET := 0x00000100
+BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/Image.gz-dtb
 
