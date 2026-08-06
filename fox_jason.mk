@@ -4,6 +4,8 @@
 
 PRODUCT_RELEASE_NAME := jason
 
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+
 # Inherit OrangeFox / TWRP common configs
 $(call inherit-product-if-exists, vendor/fox/config/common.mk)
 $(call inherit-product-if-exists, vendor/twrp/config/common.mk)
