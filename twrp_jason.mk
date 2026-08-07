@@ -25,10 +25,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib64/libdrmfs.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libdrmfs.so \
     $(LOCAL_PATH)/proprietary/lib64/librpmb.so:$(TARGET_COPY_OUT_VENDOR)/lib64/librpmb.so \
     $(LOCAL_PATH)/proprietary/lib64/libssd.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libssd.so \
-    $(LOCAL_PATH)/proprietary/lib64/hw/keystore.sdm660.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/keystore.sdm660.so \
-    $(LOCAL_PATH)/proprietary/etc/hid/consumer-desc.bin:$(TARGET_COPY_OUT_SYSTEM)/etc/hid/consumer-desc.bin \
-    $(LOCAL_PATH)/proprietary/etc/hid/keyboard-desc.bin:$(TARGET_COPY_OUT_SYSTEM)/etc/hid/keyboard-desc.bin \
-    $(LOCAL_PATH)/proprietary/etc/hid/mouse-desc.bin:$(TARGET_COPY_OUT_SYSTEM)/etc/hid/mouse-desc.bin
+    $(LOCAL_PATH)/proprietary/lib64/hw/keystore.sdm660.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/keystore.sdm660.so
 
 PRODUCT_NAME := twrp_jason
 PRODUCT_DEVICE := jason
