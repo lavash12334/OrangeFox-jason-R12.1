@@ -40,7 +40,7 @@ BOARD_KERNEL_CMDLINE := androidboot.configfs=true androidboot.hardware=qcom andr
 BOARD_KERNEL_CMDLINE += ehci-hcd.park=3 loop.max_part=7 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x37
 BOARD_KERNEL_CMDLINE += printk.devkmsg=on sched_enable_hmp=1 sched_enable_power_aware=1
 BOARD_KERNEL_CMDLINE += service_locator.enable=1 usbcore.autosuspend=7 user_debug=31
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive androidboot.boot_devices=c0c4000.sdhci
+BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive androidboot.boot_devices=c0c4000.sdhci ignore_loglevel debug
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
@@ -112,7 +112,7 @@ TW_INCLUDE_NTFS_3G := true
 TW_IGNORE_MISC_WIPE_DATA := true
 TW_NO_LEGACY_MISC_COMMAND := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_SCREEN_BLANK_ON_BOOT := true
+TW_SCREEN_BLANK_ON_BOOT := false
 TW_USE_TOOLBOX := true
 TARGET_USES_LOGD := true
 TWRP_INCLUDE_LOGCAT := true

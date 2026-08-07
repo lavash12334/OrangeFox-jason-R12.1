@@ -34,6 +34,9 @@ on property:sys.usb.ffs.ready=1
 on boot
     start health-hal-2-1
     setprop sys.usb.config adb
+    mkdir /cache/recovery 0775 system cache
+    exec_background -- /system/bin/sh -c "logcat -f /cache/recovery/live_logcat.txt"
+    exec_background -- /system/bin/sh -c "dmesg -w > /cache/recovery/live_dmesg.txt"
 
 on fs
     wait /dev/block/platform/soc/c0c4000.sdhci
