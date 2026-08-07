@@ -5,6 +5,7 @@
 PRODUCT_RELEASE_NAME := jason
 
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/base_system.mk)
 
 # Inherit OrangeFox / TWRP common configs
 $(call inherit-product-if-exists, vendor/fox/config/common.mk)
@@ -58,7 +59,7 @@ OF_DISABLE_OTA_MENU := 1
 OF_KEEP_FORCED_ENCRYPTION := 1
 OF_DONT_PATCH_ENCRYPTED_DEVICE := 1
 OF_OPTIONS_LIST_NUM := 9
-OF_ENABLE_ALL_PARTITION_TOOLS := 1
+# OF_ENABLE_ALL_PARTITION_TOOLS is only for dynamic partition devices
 OF_USE_LEGACY_TIME_FIXUP := 1
 OF_ENABLE_FRP_ADDON := 1
 OF_USE_DMCTL := 1
