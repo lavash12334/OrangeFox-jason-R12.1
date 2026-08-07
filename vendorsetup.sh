@@ -10,7 +10,8 @@ export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
 
 # OrangeFox Options & Features
-export OF_USE_LZMA_COMPRESSION=1
+# NOTE: DO NOT set OF_USE_LZMA_COMPRESSION here!
+# Kernel 4.19 for jason does NOT have CONFIG_RD_LZMA, so LZMA ramdisk = instant boot hang.
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 export FOX_REPLACE_BUSYBOX_PS=1
 export FOX_USE_BASH_SHELL=1
@@ -38,15 +39,8 @@ export OF_STATUS_INDENT_RIGHT=48
 export OF_ALLOW_DISABLE_NAVBAR=0
 export OF_CLOCK_POS=1
 
-# FBE Decryption & Storage (SDM660 FBE v1 / ICE / Keymaster 3.0)
-export TW_INCLUDE_CRYPTO=true
-export TW_INCLUDE_FBE=true
-export BOARD_USES_QCOM_FBE_DECRYPTION=true
-export TW_USE_FSCRYPT_POLICY=1
-export OF_KEYMASTER_VERSION=3.0
-export RECOVERY_SDCARD_ON_DATA=true
-export TW_INTERNAL_STORAGE_PATH="/data/media"
-export TW_INTERNAL_STORAGE_MOUNT_POINT="sdcard"
+# NOTE: Crypto/FBE/Keymaster flags are set in BoardConfig.mk and fox_jason.mk.
+# Do NOT duplicate or override them here to avoid conflicts.
 
 # Add lunch combos
 add_lunch_combo fox_jason-eng
