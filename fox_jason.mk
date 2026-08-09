@@ -4,6 +4,7 @@
 
 PRODUCT_RELEASE_NAME := jason
 
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/base_system.mk)
 
