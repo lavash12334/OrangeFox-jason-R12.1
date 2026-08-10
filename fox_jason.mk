@@ -4,7 +4,6 @@
 
 PRODUCT_RELEASE_NAME := jason
 
-$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
 $(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/base_system.mk)
 
@@ -30,6 +29,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib64/librpmb.so:$(TARGET_COPY_OUT_VENDOR)/lib64/librpmb.so \
     $(LOCAL_PATH)/proprietary/lib64/libssd.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libssd.so \
     $(LOCAL_PATH)/proprietary/lib64/hw/keystore.sdm660.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/keystore.sdm660.so
+
+# The root /init symlink targets this recovery-capable Android init binary.
+TARGET_RECOVERY_DEVICE_MODULES += init_second_stage
 
 PRODUCT_NAME := fox_jason
 PRODUCT_DEVICE := jason
