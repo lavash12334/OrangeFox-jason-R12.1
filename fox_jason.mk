@@ -30,8 +30,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib64/libssd.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libssd.so \
     $(LOCAL_PATH)/proprietary/lib64/hw/keystore.sdm660.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/keystore.sdm660.so
 
-# The root /init symlink targets this recovery-capable Android init binary.
-TARGET_RECOVERY_DEVICE_MODULES += init_second_stage
+# Add minimal init and base system components for recovery boot
+PRODUCT_PACKAGES += \
+    init \
+    init.rc \
+    ueventd.rc \
+    toolbox \
+    toybox \
+    sh
 
 PRODUCT_NAME := fox_jason
 PRODUCT_DEVICE := jason
