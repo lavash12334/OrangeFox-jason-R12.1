@@ -25,10 +25,14 @@ echo "-- jason callback: trimming the recovery ramdisk in $RAMDISK"
 
 # libraries that nothing in the ramdisk links against
 # (verified against the DT_NEEDED lists of every binary in the ramdisk)
-rm -f "$RAMDISK/system/lib64/libxml2.so"
 rm -f "$RAMDISK/system/lib64/libncurses.so"
 rm -f "$RAMDISK/system/lib64/libnl.so"
 rm -f "$RAMDISK/system/lib64/libclang_rt.ubsan_standalone-aarch64-android.so"
+
+# NOTE: libxml2.so must stay. It is not used by anything inside the ramdisk, but
+# /vendor/lib64/libdrmfs.so needs it, and that library is loaded by the vendor
+# qseecomd, which registers the QSEE listeners that keymaster (and therefore
+# decryption) depends on.
 
 # exFAT support (only used for OTG media)
 rm -f "$RAMDISK/system/bin/exfat-fuse"
@@ -39,9 +43,18 @@ rm -f "$RAMDISK/system/lib64/libexfat_twrp.so"
 # timezone database (only affects the displayed time zone)
 rm -f "$RAMDISK/system/usr/share/zoneinfo/tzdata"
 
-# logd/logcat: the kernel has no UART console driver, logs are read from pstore
-rm -f "$RAMDISK/system/bin/logd"
-rm -f "$RAMDISK/system/bin/logcat"
+# command line keystore tool, not used by the recovery itself
+rm -f "$RAMDISK/system/bin/keystore_cli_v2"
+
+# boot image patching tool: dropped for now to make room for logd/libxml2
+rm -f "$RAMDISK/sbin/magiskboot"
+
+# theme fonts that no page loads by default (InterDisplay is used by the splash,
+# GoogleSans and Roboto are offered in the theme settings)
+for font in Chococooky EuclidFlex-Medium EuclidFlex-Regular Exo2-Medium \
+            Exo2-Regular FiraCode-Medium FiraCode-Regular RobotoSlab; do
+    rm -f "$RAMDISK/twres/fonts/$font.ttf"
+done
 
 # translations: keep English and Russian
 for lang in cs de el fr id it pl pt_PT ro tr ua; do

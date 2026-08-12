@@ -53,3 +53,10 @@ on fs
 
 on property:sys.powerctl=*
     exec -- /system/bin/dd if=/dev/zero of=/dev/block/platform/soc/c0c4000.sdhci/by-name/misc bs=4096 count=256
+
+# init.recovery.qcom_decrypt.rc only starts qseecomd when crypto.ready and
+# hwservicemanager.ready line up, which does not always happen here, so start it
+# from our own trigger as well. Without it the QSEE listeners never register and
+# keymaster never comes up.
+on property:crypto.ready=1
+    start qseecomd
