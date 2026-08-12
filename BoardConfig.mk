@@ -41,7 +41,6 @@ BOARD_KERNEL_CMDLINE += ehci-hcd.park=3 loop.max_part=7 lpm_levels.sleep_disable
 BOARD_KERNEL_CMDLINE += printk.devkmsg=on sched_enable_hmp=1 sched_enable_power_aware=1
 BOARD_KERNEL_CMDLINE += service_locator.enable=1 usbcore.autosuspend=7 user_debug=31
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive androidboot.boot_devices=c0c4000.sdhci ignore_loglevel debug
-BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0 earlycon=msm_serial_dm,0xc170000
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
@@ -118,8 +117,8 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_NO_LEGACY_PROPS := true
 TW_SCREEN_BLANK_ON_BOOT := false
 TW_USE_TOOLBOX := true
-TARGET_USES_LOGD := true
-TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := false
+TWRP_INCLUDE_LOGCAT := false
 
 ALLOW_MISSING_DEPENDENCIES := true
 SOONG_ALLOW_MISSING_DEPENDENCIES := true

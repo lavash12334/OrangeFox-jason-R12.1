@@ -18,6 +18,13 @@ export FOX_REPLACE_BUSYBOX_PS=1
 export TW_EXCLUDE_NANO=true
 export TW_EXCLUDE_PYTHON=true
 
+# Size limits: the ramdisk is copied to 0x84280000 and the first no-map reserved
+# region starts at 0x85600000, so the compressed ramdisk must stay under 20 MB.
+export FOX_REMOVE_BASH=1
+export FOX_EXCLUDE_NANO_EDITOR=1
+export FOX_REMOVE_AAPT=1
+export FOX_LOCAL_CALLBACK_SCRIPT="${ANDROID_BUILD_TOP:-$(pwd)}/device/xiaomi/jason/fox-callback.sh"
+
 export OF_USE_MAGISKBOOT=1
 export OF_USE_MAGISKBOOT_FOR_ALL_PATCHES=1
 export OF_NO_TREBLE_COMPATIBILITY_CHECK=1
