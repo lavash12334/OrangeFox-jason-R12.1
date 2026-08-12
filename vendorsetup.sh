@@ -10,15 +10,11 @@ export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
 
 # OrangeFox Options & Features
-# NOTE: DO NOT set OF_USE_LZMA_COMPRESSION here!
-# Kernel 4.19 for jason does NOT have CONFIG_RD_LZMA, so LZMA ramdisk = instant boot hang.
+# Ramdisk compression: the 4.19 kernel config (extracted via CONFIG_IKCONFIG from
+# Image.gz-dtb) only has CONFIG_RD_GZIP=y and CONFIG_RD_LZ4=y, so LZMA/XZ ramdisks
+# cannot be decompressed by this kernel. Keep the default gzip compression.
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 export FOX_REPLACE_BUSYBOX_PS=1
-export FOX_USE_BASH_SHELL=0
-export FOX_USE_NANO_EDITOR=0
-export FOX_USE_SED_BINARY=0
-export FOX_USE_TAR_BINARY=0
-export FOX_USE_XZ_UTILS=0
 export TW_EXCLUDE_NANO=true
 export TW_EXCLUDE_PYTHON=true
 
