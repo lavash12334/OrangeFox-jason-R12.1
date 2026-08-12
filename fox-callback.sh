@@ -26,18 +26,29 @@ echo "-- jason callback: trimming the recovery ramdisk in $RAMDISK"
 # libraries that nothing in the ramdisk links against
 rm -f "$RAMDISK/system/lib64/libxml2.so"
 rm -f "$RAMDISK/system/lib64/libncurses.so"
+rm -f "$RAMDISK/system/lib64/libnl.so"
 rm -f "$RAMDISK/system/lib64/libclang_rt.ubsan_standalone-aarch64-android.so"
+
+# HAL interface libraries for hardware that recovery never talks to
+# (vibrator, A/B boot control, oemlock, authsecret, weaver, confirmationui,
+#  stats, storage health, suspend, wifi keystore, hidl token)
+for lib in android.hardware.vibrator@1.0 android.hardware.vibrator@1.1 \
+           android.hardware.vibrator@1.2 android.hardware.vibrator-V1-cpp \
+           android.hardware.vibrator-V1-ndk_platform android.hardware.vibrator-V2-cpp \
+           android.hardware.vibrator-V2-ndk_platform android.hardware.vibrator-V2-ndk \
+           android.hardware.boot@1.0 android.hardware.boot@1.1 android.hardware.boot@1.2 \
+           android.hardware.oemlock@1.0 android.hardware.authsecret@1.0 \
+           android.hardware.weaver@1.0 android.hardware.confirmationui@1.0 \
+           android.frameworks.stats@1.0 android.frameworks.stats-V1-ndk_platform \
+           android.hardware.health.storage@1.0 android.hardware.health.storage-V1-ndk_platform \
+           android.system.suspend@1.0 android.system.wifi.keystore@1.0 \
+           android.hidl.token@1.0; do
+    rm -f "$RAMDISK/system/lib64/$lib.so"
+done
 
 # logd/logcat: the kernel has no UART console driver, logs are read from pstore
 rm -f "$RAMDISK/system/bin/logd"
 rm -f "$RAMDISK/system/bin/logcat"
-
-# theme fonts: keep only Roboto and GoogleSans
-for font in Chococooky EuclidFlex-Medium EuclidFlex-Regular Exo2-Medium \
-            Exo2-Regular FiraCode-Medium FiraCode-Regular InterDisplay-Medium \
-            InterDisplay-Regular RobotoSlab; do
-    rm -f "$RAMDISK/twres/fonts/$font.ttf"
-done
 
 # translations: keep English and Russian
 for lang in cs de el fr id it pl pt_PT ro tr ua; do

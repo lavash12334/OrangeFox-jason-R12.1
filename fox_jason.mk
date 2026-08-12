@@ -23,6 +23,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.rndis.func.name=rndis_bam \
     sys.usb.rmnet.func.name=rmnet_bam
 
+# Decryption helpers (qseecomd/keymaster services for FBE)
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/proprietary/lib64/libQSEEComAPI.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libQSEEComAPI.so \
     $(LOCAL_PATH)/proprietary/lib64/libdiag.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libdiag.so \
