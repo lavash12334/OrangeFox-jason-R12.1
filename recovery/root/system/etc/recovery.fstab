@@ -1,23 +1,31 @@
-# Android fstab file.
-# The filesystem that contains the filesystem checker binary (typically /system) cannot
-# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
-
-# mount point   fstype  device									device2				flags
-/boot			emmc	/dev/block/bootdevice/by-name/boot							flags=backup=1;flashimg=1
-/cache			ext4	/dev/block/bootdevice/by-name/cache
-/metadata		ext4	/dev/block/bootdevice/by-name/metadata						flags=display="Metadata";backup=1
-/data		ext4	/dev/block/bootdevice/by-name/userdata	flags=fileencryption=aes-256-xts:aes-256-cts:v2+inlinecrypt_optimized;metadata_encryption=aes-256-xts;keydirectory=/metadata/vold/metadata_encryption
-/misc			emmc	/dev/block/bootdevice/by-name/misc
-/persist	    ext4	/dev/block/bootdevice/by-name/persist					    flags=display="Persist";backup=1
-/recovery		emmc	/dev/block/bootdevice/by-name/recovery						flags=backup=1;flashimg=1
-/system			ext4	/dev/block/bootdevice/by-name/system						flags=display="System";backup=1;wipeingui
-/system_image	emmc	/dev/block/bootdevice/by-name/system						flags=display="System Image";backup=1;flashimg=1
-/vendor		ext4	/dev/block/bootdevice/by-name/cust					flags=display="Vendor";backup=1;wipeingui
-/vendor_image	emmc	/dev/block/bootdevice/by-name/cust					flags=display="Vendor Image";backup=1;flashimg=1
-/efs1			emmc	/dev/block/bootdevice/by-name/modemst1						flags=backup=1;display=EFS
-/efs2			emmc	/dev/block/bootdevice/by-name/modemst2						flags=backup=1;subpartitionof=/efs1
-/efsg           emmc	/dev/block/bootdevice/by-name/fsg                           flags=backup=1;subpartitionof=/efs1
-/efsc           emmc	/dev/block/bootdevice/by-name/fsc                           flags=backup=1;subpartitionof=/efs1
-
-# Removable storage
-/usb_otg		vfat	/dev/block/sda1							/dev/block/sda		flags=display="USB-OTG";storage;wipeingui;removable;backup=0
+# Android fstab file for jason (Xiaomi Mi Note 3)
+#
+# This file has to stay in the standard AOSP format (five columns), because
+# libfs_mgr parses it as well - the FBE code in the recovery calls
+# ReadDefaultFstab(), and with the old TWRP four column format it fails with
+# "Error parsing fs_mgr_options" and then "No mount point entry for /data",
+# which makes fscrypt_initialize_systemwide_keys() fail and decryption
+# impossible.
+#
+# The encryption flags mirror the ROM's own /vendor/etc/fstab.qcom: this device
+# uses FBE v1 with the QTI inline crypto engine ("fileencryption=ice") and has
+# no metadata encryption and no metadata partition.
+#
+# <src>                                       <mnt_point>          <type>  <mnt_flags>                                                          <fs_mgr_flags>
+/dev/block/bootdevice/by-name/userdata        /data                ext4    nosuid,nodev,barrier=1,noauto_da_alloc,noatime,lazytime,errors=panic wait,check,quota,fileencryption=ice
+/dev/block/bootdevice/by-name/userdata        /data                f2fs    nosuid,nodev,noatime,background_gc=off,fsync_mode=nobarrier          wait,check,quota,fileencryption=ice
+/dev/block/bootdevice/by-name/system          /system              ext4    ro,barrier=1                                                         wait,display=System,backup=1,wipeingui
+/dev/block/bootdevice/by-name/system          /system_image        emmc    defaults                                                             defaults,display=System_Image,backup=1,flashimg=1
+/dev/block/bootdevice/by-name/cust            /vendor              ext4    ro,barrier=1                                                         wait,display=Vendor,backup=1,wipeingui
+/dev/block/bootdevice/by-name/cust            /vendor_image        emmc    defaults                                                             defaults,display=Vendor_Image,backup=1,flashimg=1
+/dev/block/bootdevice/by-name/cache           /cache               ext4    nosuid,nodev,noatime,barrier=1                                       wait
+/dev/block/bootdevice/by-name/boot            /boot                emmc    defaults                                                             defaults,display=Boot,backup=1,flashimg=1
+/dev/block/bootdevice/by-name/recovery        /recovery            emmc    defaults                                                             defaults,display=Recovery,backup=1,flashimg=1
+/dev/block/bootdevice/by-name/misc            /misc                emmc    defaults                                                             defaults
+/dev/block/bootdevice/by-name/persist         /persist             ext4    noatime,nosuid,nodev,barrier=1                                       wait,display=Persist,backup=1
+/dev/block/bootdevice/by-name/dsp             /vendor/dsp          ext4    ro,nosuid,nodev,barrier=1                                            wait
+/dev/block/bootdevice/by-name/modemst1        /efs1                emmc    defaults                                                             defaults,display=EFS,backup=1
+/dev/block/bootdevice/by-name/modemst2        /efs2                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
+/dev/block/bootdevice/by-name/fsg             /efsg                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
+/dev/block/bootdevice/by-name/fsc             /efsc                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
+/dev/block/sda1                               /usb_otg             vfat    nosuid,nodev                                                         wait,display=USB-OTG,storage,removable,wipeingui
