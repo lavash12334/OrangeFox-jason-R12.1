@@ -23,6 +23,8 @@ export TW_EXCLUDE_PYTHON=true
 export FOX_REMOVE_BASH=1
 export FOX_EXCLUDE_NANO_EDITOR=1
 export FOX_REMOVE_AAPT=1
+# This device calls its vendor partition "cust".
+export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/bootdevice/by-name/cust"
 export FOX_LOCAL_CALLBACK_SCRIPT="${ANDROID_BUILD_TOP:-$(pwd)}/device/xiaomi/jason/fox-callback.sh"
 
 export OF_USE_MAGISKBOOT=1
