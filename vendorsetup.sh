@@ -14,7 +14,7 @@ export FOX_TARGET_DEVICES="jason"
 # Image.gz-dtb) only has CONFIG_RD_GZIP=y and CONFIG_RD_LZ4=y, so LZMA/XZ ramdisks
 # cannot be decompressed by this kernel. Keep the default gzip compression.
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
-export FOX_REPLACE_BUSYBOX_PS=1
+export FOX_REPLACE_BUSYBOX_PS=0
 export TW_EXCLUDE_NANO=true
 export TW_EXCLUDE_PYTHON=true
 

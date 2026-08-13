@@ -46,16 +46,6 @@ rm -f "$RAMDISK/system/usr/share/zoneinfo/tzdata"
 # command line keystore tool, not used by the recovery itself
 rm -f "$RAMDISK/system/bin/keystore_cli_v2"
 
-# boot image patching tool: dropped for now to make room for logd/libxml2
-rm -f "$RAMDISK/sbin/magiskboot"
-
-# theme fonts that no page loads by default (InterDisplay is used by the splash,
-# GoogleSans and Roboto are offered in the theme settings)
-for font in Chococooky EuclidFlex-Medium EuclidFlex-Regular Exo2-Medium \
-            Exo2-Regular FiraCode-Medium FiraCode-Regular RobotoSlab; do
-    rm -f "$RAMDISK/twres/fonts/$font.ttf"
-done
-
 # translations: keep English and Russian
 for lang in cs de el fr id it pl pt_PT ro tr ua; do
     rm -f "$RAMDISK/twres/languages/$lang.xml"
