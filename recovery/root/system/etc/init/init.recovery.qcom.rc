@@ -40,6 +40,12 @@ on boot
 on fs
     wait /dev/block/platform/soc/c0c4000.sdhci
     symlink /dev/block/platform/soc/c0c4000.sdhci /dev/block/bootdevice
+
+    # prepdecrypt.sh mounts /dev/block/bootdevice/by-name/vendor to read the ROM's
+    # build.prop; on this device that partition is called "cust", so without this
+    # alias the script aborts with "Unable to mount vendor to temporary folder"
+    # and never applies the ROM's security patch level, which keymaster needs.
+    symlink /dev/block/platform/soc/c0c4000.sdhci/by-name/cust /dev/block/platform/soc/c0c4000.sdhci/by-name/vendor
     mkdir /cache 0775 system cache
     mount ext4 /dev/block/platform/soc/c0c4000.sdhci/by-name/cache /cache
     mkdir /cache/recovery 0775 system cache
