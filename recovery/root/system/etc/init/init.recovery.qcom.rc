@@ -1,6 +1,12 @@
 import /init.recovery.qcom_decrypt.rc
 
 on init
+    # Let prepdecrypt override the recovery's OS version and security patch level
+    # with the ROM's values. Without it the script skips that step on devices that
+    # have a real recovery partition, and keymaster then sees a different OS
+    # version than the one the keys were created under.
+    setprop prepdecrypt.setpatch true
+
     mkdir /config
     mount configfs none /config
     mkdir /config/usb_gadget/g1 0770 shell shell
@@ -55,6 +61,27 @@ on fs
     # The synaptics touch driver probes at about 1.5s, later than the recovery
     # process starts, so wait for its input device before continuing to "on boot".
     wait /dev/input/event1 10
+
+    # The QSEE listener libraries read their storage from /mnt/vendor/persist,
+    # which is where the ROM mounts this partition; /persist alone is not enough.
+    mkdir /mnt/vendor 0755 root root
+    mkdir /mnt/vendor/persist 0771 root system
+    mount ext4 /dev/block/platform/soc/c0c4000.sdhci/by-name/persist /mnt/vendor/persist
+
+# The TrustZone clock is maintained by the vendor time daemon, using the offsets
+# stored in /mnt/vendor/persist/time. It needs the QSEE listeners to be up first.
+service jason-time_daemon /vendor/bin/time_daemon
+    user root
+    group root system
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/sbin
+    disabled
+    seclabel u:r:recovery:s0
+
+on property:vendor.sys.listeners.registered=true
+    start jason-time_daemon
+
+on property:sys.listeners.registered=true
+    start jason-time_daemon
 
 on property:sys.powerctl=*
     exec -- /system/bin/dd if=/dev/zero of=/dev/block/platform/soc/c0c4000.sdhci/by-name/misc bs=4096 count=256
