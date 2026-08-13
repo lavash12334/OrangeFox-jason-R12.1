@@ -39,10 +39,15 @@ on fs
     mkdir /cache/recovery 0775 system cache
     exec_background -- /system/bin/sh -c "dmesg -w > /cache/recovery/fox_live_dmesg.txt"
 
-    # The decryption services live on the vendor partition (cust). Mount it and
-    # link them where init.recovery.qcom_decrypt.rc expects to find them.
-    mkdir /vendor 0755 root root
-    mount ext4 /dev/block/platform/soc/c0c4000.sdhci/by-name/cust /vendor ro
+    # The decryption services live on the vendor partition (cust). Mount it out of
+    # the way and expose only its bin/lib64 through symlinks: mounting it on top of
+    # /vendor would also replace our VINTF manifest with the ROM's, and libvintf in
+    # this tree cannot parse that one ("Unrecognized manifest.version 5.0"), which
+    # kills keystore2 and the keymaster lookup.
+    mkdir /mnt/vendor_cust 0755 root root
+    mount ext4 /dev/block/platform/soc/c0c4000.sdhci/by-name/cust /mnt/vendor_cust ro
+    symlink /mnt/vendor_cust/bin /vendor/bin
+    symlink /mnt/vendor_cust/lib64 /vendor/lib64
     symlink /vendor/bin/qseecomd /system/bin/qseecomd
     symlink /vendor/bin/hw/android.hardware.keymaster@3.0-service /system/bin/android.hardware.keymaster@3.0-service
     symlink /vendor/bin/hw/android.hardware.gatekeeper@1.0-service /system/bin/android.hardware.gatekeeper@1.0-service
