@@ -84,10 +84,21 @@ TW_INCLUDE_CRYPTO_FBE := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 TW_USE_FSCRYPT_POLICY := 1
 
-# Dynamic System Keymaster
-TW_CRYPTO_USE_SYSTEM_KEYMASTER := true
-OF_KEYMASTER_VERSION := 3.0
-TW_KEYMASTER_MAX_API := 3.0
+# Keymaster: this device only has the vendor keymaster 3.0 HAL (keymaster1
+# implementation, /vendor/lib64/hw/keystore.sdm660.so). Force it instead of
+# relying on the VINTF lookup, and disable the 4.x paths.
+# These three names are the ones the OrangeFox 12.1 sources actually read
+# (orangefox.mk: OF_DEFAULT_KEYMASTER_VERSION, TW_FORCE_KEYMASTER_VER,
+# OF_NO_KEYMASTER_VER_4X).
+OF_DEFAULT_KEYMASTER_VERSION := 3.0
+TW_FORCE_KEYMASTER_VER := true
+OF_NO_KEYMASTER_VER_4X := 1
+# Kept for documentation only: no reference to TW_CRYPTO_USE_SYSTEM_KEYMASTER,
+# OF_KEYMASTER_VERSION or TW_KEYMASTER_MAX_API exists in orangefox.mk,
+# bootable/recovery/Android.mk or the vold fork's Android.bp of this branch.
+# TW_CRYPTO_USE_SYSTEM_KEYMASTER := true
+# OF_KEYMASTER_VERSION := 3.0
+# TW_KEYMASTER_MAX_API := 3.0
 
 TW_INTERNAL_STORAGE_PATH := "/data/media"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
