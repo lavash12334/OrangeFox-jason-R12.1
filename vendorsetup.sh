@@ -49,6 +49,25 @@ export OF_CLOCK_POS=1
 # NOTE: Crypto/FBE/Keymaster flags are set in BoardConfig.mk and fox_jason.mk.
 # Do NOT duplicate or override them here to avoid conflicts.
 
+# OS version and security patch level reported by the recovery.
+#
+# The vendor keymaster 3.0 service calls keymaster::ConfigureDevice() once at
+# startup, which sends KM_TAG_OS_VERSION and KM_TAG_OS_PATCHLEVEL to the
+# TrustZone app; the values come from ro.build.version.release and
+# ro.build.version.security_patch. The TA binds these to every key blob, so a
+# recovery that reports Android 12 / 2022-04-05 cannot use keys created by the
+# installed ROM (Android 13, patch 2024-08-05 - see the recovery log:
+# "Custom ROM (SDK:33, Android 13) TQ3A.230901.001").
+#
+# prepdecrypt.sh normally patches these props at runtime, but only if resetprop
+# is present and the script gets that far; setting them at build time makes the
+# match unconditional. These must be exported here (not in BoardConfig.mk):
+# version_defaults.mk is read before BoardConfig.mk and marks both variables
+# .KATI_READONLY, so an assignment in BoardConfig.mk would break the build,
+# while an environment variable is honoured by its "ifndef" guards.
+export PLATFORM_VERSION=13
+export PLATFORM_SECURITY_PATCH=2024-08-05
+
 # Add lunch combos
 add_lunch_combo fox_jason-eng
 add_lunch_combo fox_jason-userdebug

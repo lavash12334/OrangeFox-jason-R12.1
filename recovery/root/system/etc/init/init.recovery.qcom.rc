@@ -6,6 +6,10 @@ on init
     # have a real recovery partition, and keymaster then sees a different OS
     # version than the one the keys were created under.
     setprop prepdecrypt.setpatch true
+    # Full prepdecrypt logging: at the default level the script does not report
+    # whether resetprop exists, which partitions it mounted, or whether setting
+    # ro.build.version.release / .security_patch actually succeeded.
+    setprop prepdecrypt.loglevel 2
 
     mkdir /config
     mount configfs none /config
