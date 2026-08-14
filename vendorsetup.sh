@@ -48,11 +48,15 @@ export OF_STATUS_INDENT_RIGHT=48
 export OF_ALLOW_DISABLE_NAVBAR=0
 export OF_CLOCK_POS=1
 
-# Flashlight. This is a PM660L device with two torch LEDs behind one switch:
-# /sys/class/leds/led:torch_0 (max_brightness 100) sets the level and
-# /sys/class/leds/led:switch_0 (max_brightness 255) turns it on.
+# Flashlight. PM660L device with a dual-tone flash behind one enable switch,
+# verified by writing to the sysfs nodes on the device:
+#   led:torch_0 -> the warm (amber) LED
+#   led:torch_1 -> the white LED        <- this is the one we use
+#   led:switch_0 -> the enable for both (led:switch_1 does nothing here)
+# Lighting both LEDs at once needs three writes and OrangeFox only takes two
+# paths (level, then enable), so the flashlight is the white LED alone.
 export OF_FLASHLIGHT_ENABLE=1
-export OF_FL_PATH1="/sys/class/leds/led:torch_0/brightness"
+export OF_FL_PATH1="/sys/class/leds/led:torch_1/brightness"
 export OF_FL_PATH2="/sys/class/leds/led:switch_0/brightness"
 
 # NOTE: Crypto/FBE/Keymaster flags are set in BoardConfig.mk and fox_jason.mk.
