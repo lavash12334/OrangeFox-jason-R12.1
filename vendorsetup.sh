@@ -53,11 +53,14 @@ export OF_CLOCK_POS=1
 #   led:torch_0 -> the warm (amber) LED
 #   led:torch_1 -> the white LED        <- this is the one we use
 #   led:switch_0 -> the enable for both (led:switch_1 does nothing here)
-# Lighting both LEDs at once needs three writes and OrangeFox only takes two
-# paths (level, then enable), so the flashlight is the white LED alone.
+# These are the LED *directories*, not the brightness files: GUIAction::
+# flashlightImpl() appends "/brightness" and "/max_brightness" itself and bails
+# out with "Flashlight file not found!" if the path already ends in /brightness.
+# It then writes the value of max_brightness, so torch_1 gets 100 and switch_0
+# gets 255.
 export OF_FLASHLIGHT_ENABLE=1
-export OF_FL_PATH1="/sys/class/leds/led:torch_1/brightness"
-export OF_FL_PATH2="/sys/class/leds/led:switch_0/brightness"
+export OF_FL_PATH1="/sys/class/leds/led:torch_1"
+export OF_FL_PATH2="/sys/class/leds/led:switch_0"
 
 # NOTE: Crypto/FBE/Keymaster flags are set in BoardConfig.mk and fox_jason.mk.
 # Do NOT duplicate or override them here to avoid conflicts.
