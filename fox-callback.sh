@@ -43,12 +43,19 @@ rm -f "$RAMDISK/system/lib64/libexfat_twrp.so"
 # timezone database (only affects the displayed time zone)
 rm -f "$RAMDISK/system/usr/share/zoneinfo/tzdata"
 
-# command line keystore tool, not used by the recovery itself
-rm -f "$RAMDISK/system/bin/keystore_cli_v2"
+# command line keystore tool: kept on purpose. It is the only way to ask the
+# vendor keymaster TA for a fresh AES-GCM key from inside the recovery
+# ("keystore_cli_v2 encrypt --name=t --in=... --out=... --seclevel=tee"), which
+# separates "the TA rejects the ROM's stored key blob" from "GCM through this
+# HAL does not work at all". Remove it again once decryption works.
 
-# translations: keep English and Russian
-for lang in cs de el fr id it pl pt_PT ro tr ua; do
-    rm -f "$RAMDISK/twres/languages/$lang.xml"
+# translations: keep English and Russian only
+for xml in "$RAMDISK"/twres/languages/*.xml; do
+    [ -e "$xml" ] || continue
+    case "${xml##*/}" in
+        en.xml|ru.xml) ;;
+        *) rm -f "$xml" ;;
+    esac
 done
 
 exit 0
