@@ -35,12 +35,33 @@ TARGET_IS_64_BIT := true
 # Assert
 TARGET_OTA_ASSERT_DEVICE := jason,jason_sp
 
-# Kernel Configuration for Kernel 4.19 (Unpacked from lineage-22.2-20260620-recovery-jason-4.19.img)
-BOARD_KERNEL_CMDLINE := androidboot.configfs=true androidboot.hardware=qcom androidboot.usbcontroller=a800000.dwc3
-BOARD_KERNEL_CMDLINE += ehci-hcd.park=3 loop.max_part=7 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x37
-BOARD_KERNEL_CMDLINE += printk.devkmsg=on sched_enable_hmp=1 sched_enable_power_aware=1
-BOARD_KERNEL_CMDLINE += service_locator.enable=1 usbcore.autosuspend=7 user_debug=31
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive androidboot.boot_devices=c0c4000.sdhci ignore_loglevel debug
+# Kernel: the ROM's own kernel, extracted from its boot partition
+# (4.4.302-perf-g2c13c8fc3723, built 2024-08-15).
+#
+# This MUST stay a 4.4 kernel. The vendor decryption stack on this device is
+# from Android 8.1 (qseecomd, android.hardware.keymaster@3.0-service,
+# keystore.sdm660.so, libQSEEComAPI.so) and it does not work on the 4.19
+# LineageOS kernel we used before: with 4.19 the TrustZone app answers version
+# queries but rejects *every* key operation with -8 (verified with
+# keystore_cli_v2: RSA, EC, AES, AES-GCM and HMAC key generation all failed),
+# so /data could never be decrypted. With this kernel the same binaries work
+# and decryption succeeds. Do not swap in the 4.19 kernel again.
+#
+# The Flybustier 4.4 kernel from the third-party FBE TWRP is not usable either:
+# it cannot mount this /data read-write ("unsupported optional features (2000)"
+# = ext4 RO_COMPAT_PROJECT, the project quotas the ROM uses).
+#
+# Command line: taken verbatim from the third-party FBE TWRP for jason, which is
+# the combination validated on the device. Unlike the 4.19 kernel this one does
+# have the UART driver, so the console arguments are useful.
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200,n8 androidboot.console=ttyMSM0
+BOARD_KERNEL_CMDLINE += earlycon=msm_serial_dm,0xc170000 androidboot.hardware=qcom
+BOARD_KERNEL_CMDLINE += user_debug=31 msm_rtb.filter=0x37 ehci-hcd.park=3
+BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 sched_enable_hmp=1
+BOARD_KERNEL_CMDLINE += sched_enable_power_aware=1 service_locator.enable=1
+BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.usbcontroller=a800000.dwc3
+BOARD_KERNEL_CMDLINE += androidboot.configfs=true androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += buildvariant=eng
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
