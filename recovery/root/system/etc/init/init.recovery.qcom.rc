@@ -35,6 +35,20 @@ on init
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
 
+# Battery percentage. The recovery reads the level through
+# android::hardware::health::V2_0::IHealth::getService() - there is no sysfs
+# fallback in the binary - and shows "!%" when the service is missing. The HAL
+# is in the ramdisk (system/bin/android.hardware.health@2.1-service) but its
+# init script marks it "disabled" and declares no "interface" lines, so
+# hwservicemanager's lazy start cannot find it either:
+#   init: Control message: Could not find 'android.hardware.health@2.0::IHealth/default'
+#         for ctl.interface_start from pid: <hwservicemanager>
+# Starting it by hand once hwservicemanager is up fixes the display. The default
+# implementation reads /sys/class/power_supply/battery, which works here
+# (capacity, status, health and technology all read correctly).
+on property:hwservicemanager.ready=true
+    start health-hal-2-1
+
 # USB gadget configurations. The device has no vendor USB init in the ramdisk
 # (TW_EXCLUDE_DEFAULT_USB_INIT := true), so every combination OrangeFox can ask
 # for has to be handled here. The layout, the product ids and the order of
