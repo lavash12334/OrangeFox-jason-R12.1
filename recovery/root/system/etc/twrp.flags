@@ -1,0 +1,23 @@
+#
+# TWRP-format flags for jason (Xiaomi Mi Note 3).
+#
+# /etc/recovery.fstab has to stay in the plain AOSP five-column format because
+# libfs_mgr parses it too (the FBE code calls ReadDefaultFstab(); with the old
+# TWRP format it fails and decryption becomes impossible). This file is read only
+# by the recovery: TWPartitionManager::Process_Fstab() loads /etc/twrp.flags into
+# a map, applies the flags to the entries it finds in recovery.fstab, and then
+# adds every mount point that exists only here as an extra partition.
+#
+# That is how the OrangeFox ground rules
+#
+#   B. USB OTG must be mounted as "/usb_otg" with a display flag of "USB-Storage"
+#   C. the fstab must provide for backup of internal storage (as "/storage")
+#
+# are satisfied without breaking libfs_mgr. This device has no MicroSD slot, so
+# rule A (/sdcard1) does not apply, and it has no dynamic partitions, so
+# /system_image and /vendor_image (cust) carry backup=1;flashimg=1 in
+# recovery.fstab as rule D requires.
+#
+# <mount point>  <fstype>  <block device>   [alternate block device]  flags=...
+/usb_otg          vfat      /dev/block/sda1  /dev/block/sda            flags=fsflags=utf8;display="USB-Storage";storage;wipeingui;removable
+/storage          ext4      /data/media/0    flags=display="Internal Storage";usermrf;backup=1;fsflags="bind";removable

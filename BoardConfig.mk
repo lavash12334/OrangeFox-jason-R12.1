@@ -138,11 +138,13 @@ TW_EXCLUDE_APEX := true
 TW_EXCLUDE_PYTHON := true
 TW_EXCLUDE_SUPERSU := true
 TW_EXCLUDE_TWRP_APP := true
-# MTP is still off: OrangeFox switches USB to "mtp,adb" once it is enabled, and
-# our init.recovery.qcom.rc only knows how to build the adb-only gadget, so ADB
-# died. Restoring it needs an ffs.mtp function plus a sys.usb.config=mtp,adb
-# handler, not just this flag.
-TW_EXCLUDE_MTP := true
+# MTP is enabled. Two reasons: OrangeFox's ground rules expect a complete
+# recovery, and - more importantly - excluding it made partitionmanager.cpp fail
+# to compile (it uses AID_MEDIA_RW, whose declaration only reaches it through the
+# MTP includes), which we used to work around by patching the OrangeFox sources
+# in CI. Official maintainers may not modify the sources, so the patch is gone
+# and MTP is in. init.recovery.qcom.rc has the matching mtp / mtp,adb gadget
+# handlers.
 TW_INCLUDE_NTFS_3G := true
 TW_IGNORE_MISC_WIPE_DATA := true
 TW_NO_LEGACY_MISC_COMMAND := true

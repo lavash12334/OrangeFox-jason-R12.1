@@ -58,27 +58,6 @@ jobs:
           mkdir -p ~/orangefox/device/xiaomi/
           cp -r $GITHUB_WORKSPACE/device/xiaomi/jason ~/orangefox/device/xiaomi/jason
 
-      - name: Patch OrangeFox Sources
-        run: |
-          cd ~/orangefox/bootable/recovery
-          # partitionmanager.cpp uses AID_MEDIA_RW, but the header that declares it
-          # is only reached through the MTP includes, which are compiled out by
-          # TW_EXCLUDE_MTP := true. Add the include explicitly.
-          python3 - <<'EOF'
-          path = "partitionmanager.cpp"
-          anchor = '#include "adbbu/libtwadbbu.hpp"'
-          added = "#include <cutils/android_filesystem_config.h>"
-          src = open(path).read()
-          if "android_filesystem_config.h" in src:
-              print("already includes android_filesystem_config.h")
-          elif anchor in src:
-              open(path, "w").write(src.replace(anchor, anchor + "\n" + added, 1))
-              print("patched partitionmanager.cpp")
-          else:
-              raise SystemExit("anchor not found in partitionmanager.cpp")
-          EOF
-          grep -n "android_filesystem_config" partitionmanager.cpp
-
       - name: Cache Ccache Data
         uses: actions/cache@v4
         with:

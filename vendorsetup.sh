@@ -48,6 +48,13 @@ export OF_STATUS_INDENT_RIGHT=48
 export OF_ALLOW_DISABLE_NAVBAR=0
 export OF_CLOCK_POS=1
 
+# Flashlight. This is a PM660L device with two torch LEDs behind one switch:
+# /sys/class/leds/led:torch_0 (max_brightness 100) sets the level and
+# /sys/class/leds/led:switch_0 (max_brightness 255) turns it on.
+export OF_FLASHLIGHT_ENABLE=1
+export OF_FL_PATH1="/sys/class/leds/led:torch_0/brightness"
+export OF_FL_PATH2="/sys/class/leds/led:switch_0/brightness"
+
 # NOTE: Crypto/FBE/Keymaster flags are set in BoardConfig.mk and fox_jason.mk.
 # Do NOT duplicate or override them here to avoid conflicts.
 

@@ -28,4 +28,6 @@
 /dev/block/bootdevice/by-name/modemst2        /efs2                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
 /dev/block/bootdevice/by-name/fsg             /efsg                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
 /dev/block/bootdevice/by-name/fsc             /efsc                emmc    defaults                                                             defaults,backup=1,subpartitionof=/efs1
-/dev/block/sda1                               /usb_otg             vfat    nosuid,nodev                                                         wait,display=USB-OTG,storage,removable,wipeingui
+# /usb_otg is defined in twrp.flags instead: the AOSP format has no column for an
+# alternate block device, and USB sticks need both /dev/block/sda1 and
+# /dev/block/sda (unpartitioned media).

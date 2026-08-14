@@ -1,7 +1,0 @@
-#!/system/bin/sh
-# OrangeFox HID Consumer control wrapper
-if ! /system/bin/hid-gadget consumer "$@"; then
-    echo "HID Consumer failed, triggering auto-setup..."
-    /system/bin/hid-setup
-    exec /system/bin/hid-gadget consumer "$@"
-fi

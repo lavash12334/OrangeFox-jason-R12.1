@@ -28,13 +28,15 @@ PRODUCT_PACKAGES += \
     qcom_decrypt \
     qcom_decrypt_fbe
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/proprietary/lib64/libQSEEComAPI.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libQSEEComAPI.so \
-    $(LOCAL_PATH)/proprietary/lib64/libdiag.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libdiag.so \
-    $(LOCAL_PATH)/proprietary/lib64/libdrmfs.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libdrmfs.so \
-    $(LOCAL_PATH)/proprietary/lib64/librpmb.so:$(TARGET_COPY_OUT_VENDOR)/lib64/librpmb.so \
-    $(LOCAL_PATH)/proprietary/lib64/libssd.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libssd.so \
-    $(LOCAL_PATH)/proprietary/lib64/hw/keystore.sdm660.so:$(TARGET_COPY_OUT_VENDOR)/lib64/hw/keystore.sdm660.so
+# NOTE: the keymaster/qseecom blobs are NOT copied into the build. They are used
+# straight from the ROM's cust partition, which init.recovery.qcom.rc mounts at
+# /mnt/vendor_cust and exposes through /vendor/bin and /vendor/lib64. Copies made
+# with PRODUCT_COPY_FILES into $(TARGET_COPY_OUT_VENDOR) never reach the recovery
+# ramdisk, so they were dead configuration and have been removed. The reference
+# copies kept in proprietary/ are what the analysis in the handover notes was
+# done on. If the cust mount ever becomes a problem, the alternative is to copy
+# them to $(TARGET_RECOVERY_ROOT_OUT)/vendor/lib64 instead, which is what the
+# third-party FBE TWRP for this device does.
 
 PRODUCT_NAME := fox_jason
 PRODUCT_DEVICE := jason
