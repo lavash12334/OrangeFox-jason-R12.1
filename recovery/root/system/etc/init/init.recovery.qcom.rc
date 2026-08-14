@@ -1,11 +1,12 @@
 import /init.recovery.qcom_decrypt.rc
 
 on init
-    # Let prepdecrypt override the recovery's OS version and security patch level
-    # with the ROM's values. Without it the script skips that step on devices that
-    # have a real recovery partition, and keymaster then sees a different OS
-    # version than the one the keys were created under.
-    setprop prepdecrypt.setpatch true
+    # Deliberately NOT setting prepdecrypt.setpatch: with a real recovery
+    # partition prepdecrypt leaves SETPATCH=false and keeps the OS version and
+    # patch level the build was made with, which is what the working
+    # TWRP 3.7.0_11-0-jason-FBE build does. Those values now come from
+    # PLATFORM_VERSION / PLATFORM_SECURITY_PATCH in vendorsetup.sh (13 and
+    # 2099-12-31), so the script does not have to mount system/cust at all.
     # Full prepdecrypt logging: at the default level the script does not report
     # whether resetprop exists, which partitions it mounted, or whether setting
     # ro.build.version.release / .security_patch actually succeeded.

@@ -59,14 +59,23 @@ export OF_CLOCK_POS=1
 # installed ROM (Android 13, patch 2024-08-05 - see the recovery log:
 # "Custom ROM (SDK:33, Android 13) TQ3A.230901.001").
 #
-# prepdecrypt.sh normally patches these props at runtime, but only if resetprop
-# is present and the script gets that far; setting them at build time makes the
-# match unconditional. These must be exported here (not in BoardConfig.mk):
-# version_defaults.mk is read before BoardConfig.mk and marks both variables
-# .KATI_READONLY, so an assignment in BoardConfig.mk would break the build,
-# while an environment variable is honoured by its "ifndef" guards.
+# prepdecrypt.sh can also patch these props at runtime, but the known-working
+# FBE recovery for this device does not rely on that: TWRP 3.7.0_11-0-jason-FBE
+# (4PDA, decrypts /data of Android 11 ROMs on this phone) ships
+# ro.build.version.release=11 and ro.build.version.security_patch=2099-12-31 in
+# its prop.default and leaves prepdecrypt's SETPATCH at false. A patch level in
+# the far future is the safe direction: the TA then asks for a key upgrade
+# instead of refusing a key that is newer than the device, and the vendor HAL
+# does implement upgrade_key. The OS version is set to the ROM's actual value
+# (Android 13) because that one is known exactly.
+#
+# Both must be exported here rather than set in BoardConfig.mk:
+# version_defaults.mk is read first (envsetup.mk includes it before
+# board_config.mk) and marks them .KATI_READONLY, so an assignment in
+# BoardConfig.mk breaks the build, while an environment variable is picked up by
+# their "ifndef" guards.
 export PLATFORM_VERSION=13
-export PLATFORM_SECURITY_PATCH=2024-08-05
+export PLATFORM_SECURITY_PATCH=2099-12-31
 
 # Add lunch combos
 add_lunch_combo fox_jason-eng
