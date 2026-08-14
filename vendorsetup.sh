@@ -10,9 +10,15 @@ export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
 
 # OrangeFox Options & Features
-# Ramdisk compression: the 4.19 kernel config (extracted via CONFIG_IKCONFIG from
-# Image.gz-dtb) only has CONFIG_RD_GZIP=y and CONFIG_RD_LZ4=y, so LZMA/XZ ramdisks
-# cannot be decompressed by this kernel. Keep the default gzip compression.
+# Ramdisk compression: EXPERIMENT. The kernel we ship now is the ROM's 4.4 one
+# and its embedded config has CONFIG_RD_LZMA=y (the old 4.19 kernel had only
+# CONFIG_RD_GZIP/CONFIG_RD_LZ4, which is why this was off before). The R11.1
+# image for this device also used an LZMA ramdisk, so it should work. If the
+# recovery does not boot after this, revert this one line: a kernel that cannot
+# decompress the ramdisk dies silently before anything can be logged.
+# OF_USE_LZMA_COMPRESSION=1 makes orangefox.mk set BOARD_RAMDISK_USE_LZMA, which
+# TWRP's build/make fork turns into "lzma -f -c" for the ramdisk.
+export OF_USE_LZMA_COMPRESSION=1
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 export FOX_REPLACE_BUSYBOX_PS=0
 export TW_EXCLUDE_NANO=true
