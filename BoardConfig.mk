@@ -61,7 +61,9 @@ BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1 sched_enable_hmp=1
 BOARD_KERNEL_CMDLINE += sched_enable_power_aware=1 service_locator.enable=1
 BOARD_KERNEL_CMDLINE += swiotlb=2048 androidboot.usbcontroller=a800000.dwc3
 BOARD_KERNEL_CMDLINE += androidboot.configfs=true androidboot.selinux=permissive
-BOARD_KERNEL_CMDLINE += buildvariant=eng
+# buildvariant is not listed here on purpose: the build system appends
+# "buildvariant=eng" itself, and having it in both places put it in the image
+# twice (visible in "magiskboot unpack -h").
 
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 TARGET_KERNEL_ARCH := arm64
