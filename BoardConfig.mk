@@ -133,14 +133,17 @@ TW_MAX_BRIGHTNESS := 4095
 TW_DEFAULT_BRIGHTNESS := 2048
 TW_CUSTOM_BATTERY_PATH := /sys/class/power_supply/battery
 
-TW_EXTRA_LANGUAGES := false
+TW_EXTRA_LANGUAGES := true
 TW_EXCLUDE_APEX := true
 TW_EXCLUDE_PYTHON := true
-TW_EXCLUDE_NANO := true
 TW_EXCLUDE_SUPERSU := true
 TW_EXCLUDE_TWRP_APP := true
+# MTP is still off: OrangeFox switches USB to "mtp,adb" once it is enabled, and
+# our init.recovery.qcom.rc only knows how to build the adb-only gadget, so ADB
+# died. Restoring it needs an ffs.mtp function plus a sys.usb.config=mtp,adb
+# handler, not just this flag.
 TW_EXCLUDE_MTP := true
-TW_INCLUDE_NTFS_3G := false
+TW_INCLUDE_NTFS_3G := true
 TW_IGNORE_MISC_WIPE_DATA := true
 TW_NO_LEGACY_MISC_COMMAND := true
 TW_INPUT_BLACKLIST := "hbtp_vm"

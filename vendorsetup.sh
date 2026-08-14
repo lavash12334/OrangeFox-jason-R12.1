@@ -10,25 +10,21 @@ export FOX_BUILD_DEVICE="jason"
 export FOX_TARGET_DEVICES="jason"
 
 # OrangeFox Options & Features
-# Ramdisk compression: EXPERIMENT. The kernel we ship now is the ROM's 4.4 one
-# and its embedded config has CONFIG_RD_LZMA=y (the old 4.19 kernel had only
-# CONFIG_RD_GZIP/CONFIG_RD_LZ4, which is why this was off before). The R11.1
-# image for this device also used an LZMA ramdisk, so it should work. If the
-# recovery does not boot after this, revert this one line: a kernel that cannot
-# decompress the ramdisk dies silently before anything can be logged.
-# OF_USE_LZMA_COMPRESSION=1 makes orangefox.mk set BOARD_RAMDISK_USE_LZMA, which
-# TWRP's build/make fork turns into "lzma -f -c" for the ramdisk.
+# Ramdisk compression: LZMA, verified on the device. The kernel we ship is the
+# ROM's 4.4 one and its embedded config has CONFIG_RD_LZMA=y (the old 4.19 kernel
+# had only CONFIG_RD_GZIP/CONFIG_RD_LZ4, which is why this used to be off).
+# Measured: 20 390 676 bytes with gzip -> 13 236 246 with LZMA, i.e. about 7 MB
+# of headroom against the 20 447 232-byte limit. OF_USE_LZMA_COMPRESSION=1 makes
+# orangefox.mk set BOARD_RAMDISK_USE_LZMA, which TWRP's build/make fork turns
+# into "lzma -f -c". If a future kernel cannot decompress it, the recovery dies
+# silently before anything is logged - revert this one line then.
 export OF_USE_LZMA_COMPRESSION=1
 export FOX_USE_TWRP_RECOVERY_IMAGE_BUILDER=1
 export FOX_REPLACE_BUSYBOX_PS=0
-export TW_EXCLUDE_NANO=true
+# Python is still excluded: it is the single biggest item in the ramdisk and
+# nothing here needs it.
 export TW_EXCLUDE_PYTHON=true
 
-# Size limits: the ramdisk is copied to 0x84280000 and the first no-map reserved
-# region starts at 0x85600000, so the compressed ramdisk must stay under 20 MB.
-export FOX_REMOVE_BASH=1
-export FOX_EXCLUDE_NANO_EDITOR=1
-export FOX_REMOVE_AAPT=1
 # This device calls its vendor partition "cust".
 export FOX_RECOVERY_VENDOR_PARTITION="/dev/block/bootdevice/by-name/cust"
 export FOX_LOCAL_CALLBACK_SCRIPT="${ANDROID_BUILD_TOP:-$(pwd)}/device/xiaomi/jason/fox-callback.sh"
